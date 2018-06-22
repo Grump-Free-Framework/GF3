@@ -1,0 +1,30 @@
+.nopad-bottom { 
+	padding-bottom: 0px !important;
+}
+.nopad-top { 
+	padding-top: 0px !important;
+}
+.nopad-right { 
+	padding-right: 0px; !important
+}
+.nopad-left { 
+	padding-left: 0px !important;
+}
+.nopad {
+	padding: 0px !important;
+}
+.nomargin-bottom { 
+	margin-bottom: 0px; !important
+}
+.nomargin-top { 
+	margin-top: 0px !important;
+}
+.nomargin-right { 
+	margin-right: 0px !important;
+}
+.nomargin-left { 
+	margin-left: 0px !important;
+}
+.nomargin {
+	margin: 0px !important;
+}
