@@ -1,6 +1,6 @@
 <?php
-namespace Models;
-class ex2 {
+namespace modules\ex2\models;
+class Model {
 	
 	public function returnOutput() {
 	    return "Example Output Two";

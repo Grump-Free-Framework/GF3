@@ -1,7 +1,14 @@
 <?php
 
-function render($content, $template = 'main.htm') {
+function render($content, $template = 'templates/main') {
 	$base = Base::instance();
-	$base->set('content', $content);
-    return \Template::instance()->render("../templates/".$template);
+	$module = $base->module;
+	$base->set('content', "$module/views/$content.htm");
+    return \Template::instance()->render("../$template.htm");
+}
+function loadModel($model) {
+	$base = Base::instance();
+	$class = "\\modules\\{$base->module}\\models\\{$model}";
+	$model = new $class();
+	return $model;
 }

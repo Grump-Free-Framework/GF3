@@ -1,5 +1,6 @@
 <?php
-
+ini_set("display_errors" , 1);
+error_reporting(E_ALL);
 require_once("app/application/vendor/fat-free-framework-3.6.4/base.php");
 //require_once("app/controller.php");
 
@@ -9,6 +10,8 @@ $f3 = Base::instance();
 //configs
 $f3->config('config.ini');
 $f3->config('app/application/routes.ini');
+
+$f3->map('/', "modules\\{$f3->get('defaultModule')}\\controllers\\Controller");
 
 //php imports
 require_once("app/application/php_functions.php");
