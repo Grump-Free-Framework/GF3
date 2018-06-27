@@ -180,7 +180,7 @@ Working example:
 ```
 <?php
 $uri = explode("/", $this->f3->get('URI'));
-if($uri[1] != "login") {
+if(in_array("login", $uri)) {
 	if(!isset($_SESSION['user'])) {
 		$this->f3->reroute('/login');
 	}
