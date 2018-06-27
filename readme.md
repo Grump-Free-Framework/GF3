@@ -39,22 +39,22 @@ I've attempted to make the GF3 structure easy to follow. Most edits will be made
 	| vendor
 		php_functions.php
 		routes.ini
-	| modules
-		| ex1
-			| controllers
-				controller.php
-			| models
-				model.php
-			| views
-				index.htm
-		| ex2
-			| controllers
-				controller.php
-			| models
-				model.php
-			| views
-				index.htm
-	controller.php
+| modules
+	| ex1
+		| controllers
+			controller.php
+		| models
+			model.php
+		| views
+			index.htm
+	| ex2
+		| controllers
+			controller.php
+		| models
+			model.php
+		| views
+			index.htm
+controller.php
 ```
 
 This version has a modules system in place that allows you to easily create new modules and just throw them into your project.
