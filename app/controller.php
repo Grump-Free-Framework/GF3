@@ -6,10 +6,16 @@ class Controller {
 
 	function beforeroute(){
 		//echo 'Before routing - ';
+		foreach (glob($this->f3->get('UI')."*/beforeroute.php") as $filename) {
+			include $filename;
+		}
 	}
 
 	function afterroute(){
 		//echo '- After routing';
+		foreach (glob($this->f3->get('UI')."*/afterroute.php") as $filename) {
+			include $filename;
+		}
 	}
 
 	function __construct() {

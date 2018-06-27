@@ -167,6 +167,28 @@ You could use the URL `example.com/example/example_of_a_method` which will invok
 	
 For additional routing capabilities, take a look at [F3's routing engine documentation](https://fatfreeframework.com/3.6/routing-engine)
 
+### Module Specific beforeroute and afterroute
+
+Inside a module directory, you can create a file called `beforeroute.php` and `afterroute.php` to automatically be loaded when the project executes. This is a simple `include` hook to the beforeroute and afterroute method inside the base controller `app/controller.php` that checks for the files mentioned above and includes them into the page when found.
+
+Inside these files, you have access to the framework base with `$this->f3` because the file is simply included inside the base controller class. I added this to give the ability to modules to easily create rules for themselves, for example, a good use case for this would be if you were including a login system to your website. In beforeroute.php you would check if the user is logged in, and if they are not, you can easily redirect the user to the login page.
+
+beforeroute and afterroute are always included, whether that module is loaded or not.
+
+Working example:
+
+```
+<?php
+$uri = explode("/", $this->f3->get('URI'));
+if($uri[1] != "login") {
+	if(!isset($_SESSION['user'])) {
+		$this->f3->reroute('/login');
+	}
+}
+```
+
+The above will automatically reroute the user to `/login` if `$_SESSION['user']` is not set and the user is not already on a route that contains the word "login".
+
 ## Contributing
 
 1. Fork it
