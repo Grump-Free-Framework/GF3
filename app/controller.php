@@ -18,6 +18,10 @@ class Controller {
 		//instead just extend the page contoller class with Controller to have access to this variable.
 		//on page controllers base can be accessed by $this->f3
 		$this->f3 = Base::instance();
+		
+		$module = $this->f3->get("PARAMS.module");
+		$this->f3->module = $module ? $module : $this->f3->get("defaultModule");;
+		
 	}
 
 }

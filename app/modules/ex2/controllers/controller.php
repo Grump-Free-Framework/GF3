@@ -1,13 +1,13 @@
 <?php
-namespace Controllers;
-class ex2 extends \Controller {
+namespace modules\ex2\controllers;
+class Controller extends \Controller {
 
 	function get() {
 		
-		$example = new \Models\ex2();
+		$example = loadModel('model');
 		$this->f3->set('output', $example->returnOutput());
 		
-		echo render('ex2/index.htm');
+		echo render('index');
 	}
 	
 	function method_example() {
@@ -16,17 +16,17 @@ class ex2 extends \Controller {
 			return;
 		}
 		$this->f3->set('output', "Example Two - Method Example");
-		echo render('ex2/index.htm');
+		echo render('index');
 	}
 	
 	function method_example_post() {
 		$this->f3->set('output', "User Value (method_example): ".$_POST['text']);
-		echo render('ex2/index.htm');
+		echo render('index');
 	}
 	
 	function post() {
 		$this->f3->set('output', "User Value (index): ".$_POST['text']);
-		echo render('ex2/index.htm');
+		echo render('index');
 	}
 	
 }

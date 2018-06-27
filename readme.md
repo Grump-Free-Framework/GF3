@@ -5,7 +5,7 @@ GF3 is a framework based on Fat-Free-Framework, which is mostly known for allowi
 
 Currently, GF3 comes with a few core features:
 - Fat-Free-Framework version 3.6
-- A custom MVC system structure
+- A custom completely modular MVC system structure
 - Stock with UIKIT 3, but can easily be changed.
 - Template (Header, navbar, footer) maintained in single file, and can easily switch between multiple different templates
 - GrumpyPDO 1.4 for easy and secure MySQL database management
@@ -24,7 +24,9 @@ For nginx, lighttpd, IIS, check out the documentation at [https://fatfreeframewo
 
 Application settings can be found in `./config.ini`
 
-Currently, the only thing to do in there is to set up your database credentials to be used with GrumpyPDO.
+List of things you can do in settings:
+ - Set up your MySQL connection details
+ - Change the default module
 
 You can also fairly easily change the location of certain things like UI elements.
 
@@ -35,23 +37,27 @@ I've attempted to make the GF3 structure easy to follow. Most edits will be made
 ```
 | application
 	| vendor
-	php_functions.php
-	routes.ini
-| controllers
-	ex1.php
-	ex2.php
-| models
-	ex1.php
-	ex2.php
-| templates
-	main.htm
-| views
-	| ex1
-		index.htm
-	| ex2
-		index.htm
-controller.php
+		php_functions.php
+		routes.ini
+	| modules
+		| ex1
+			| controllers
+				controller.php
+			| models
+				model.php
+			| views
+				index.htm
+		| ex2
+			| controllers
+				controller.php
+			| models
+				model.php
+			| views
+				index.htm
+	controller.php
 ```
+
+This version has a modules system in place that allows you to easily create new modules and just throw them into your project.
 
 ### Controllers
 
@@ -61,20 +67,24 @@ Here is a simple class skeleton:
 
 ```
 <?php
-namespace Controllers;
-class example_class extends \Controller {
+namespace modules\MODULE_NAME\controllers;
+class controller extends \Controller {
 	function get() {
-		$example = new \Models\example_class();
-		echo render('example_class/index.htm');
+		$example = loadModel('model');
+		echo render('index.htm');
 	}
 }
 ```
 
-Classes have a namespace "controllers", so F3 knows which class is a controller or a model.
+Classes have a namespace "modules\MODULE_NAME\controllers", so F3 knows which class is a controller or a model.
+
+Note: MODULE_NAME should be equal to the directory name the module resides in. So if you have a module called "login", it would be stored at app/modules/login/ and MODULE_NAME would be "login"
 
 Classes also extend the base controller class (`\Controller`). 
 This gives you access to the f3 base class inside the actual page controller with the variable `$this->f3`.
 This is necessary to do things like setting variables, etc.
+
+There is also a function that is used called `loadModel()`, this will allow you to easily load any model that is stored inside the MODULE_NAME/models folder by just passing the name of the class to the function.
 
 #### Rendering Pages Through Controllers
 
@@ -84,11 +94,10 @@ You'll also notice that to render a page we call the function `render()`, which 
 render($content, $template)
 ```
 
-Where `$content` is a relative path from `app/views/` to the page content. So, in the example above, we use the path `example_class/index.htm` to load the content from `app/views/example_class/index.htm`
-Also, `$template` is a relative path from `app/templates` to a template page. By default, the path supplied is `main.htm`. This is the page template that is loaded.
-This function makes it trivial to load content into any template you wish easily.
+Where `$content` is a relative path from `app/modules/MODULE_NAME/views/` to the page content. So, in the example above, we use the path `index` to load the index.htm page from `app/modules/MODULE_NAME/views/index.htm` - You should not put the .htm extension when using this function.
 
-So if you wanted to load view content from `example_module/toasty.htm` in a custom page template stored in `templates/toast.htm`, you just have to call `render('example_module/toasty.htm', 'toast.htm')`
+Also, `$template` is a relative path from `app/` to a template page. By default, the path supplied is `templates/main`. This is the page template that is loaded.
+This function makes it trivial to load content into any template you wish easily. - You should not put the .htm extension when using this function.
 
 ### Models
 
@@ -98,8 +107,8 @@ Here is a simple model skeleton based on the controller above:
 
 ```
 <?php
-namespace Models;
-class example_class {
+namespace modules\MODULE_NAME\models;
+class Model {
 	
 	public function returnOutput() {
 	    return "Example Output One";
@@ -111,28 +120,21 @@ class example_class {
 So, if you wanted to store the return of `returnOutput()` to use in a view later, in the controller you would do:
 
 ```
-$this->f3->set('variable', $example->returnOutput());
+$model = loadModel('model');
+$this->f3->set('variable', $model->returnOutput());
 ```
 
-after declaring `$example = new \Models\example_class();`.
-
-If you want to interact with your database in the model, then you would declare the model class like this:
-
-```
-$example = new \Models\example_class($this->f3->db);
-```
-
-and you would alter your model like so:
+If you want to interact with your database in the model, you would alter your model like so:
 
 ```
 <?php
-namespace Models;
-class example_class {
+namespace modules\MODULE_NAME\models;
+class Model {
 	
 	protected $db;
 	
-	public function __construct($db) {
-	    $this->db = $db;
+	public function __construct() {
+		$this->db = \Base::instance()->db;
 	}
 	
 	public function returnOutput() {
@@ -146,7 +148,7 @@ Which would allow you to access database object with `$this->db`. If you use Gru
 
 ### Views
 
-Views are stored in `app/views`, where each module gets it's own folder. The purpose of this is to keep the project cleaner and to allow multiple pages within a single module. View files should be  built in HTML, I'm fairly positive that trying to use any PHP on these pages will simply just not render the pages because GF3 uses Fat-Free-Frameworks own rendering engine by default, but this can be changed by altering the render function in `app/application/php_functions.php` to render a different way.
+Views are stored in `modules/MODULE_NAME/views/`. View files should be built in HTML, I'm fairly positive that trying to use any PHP on these pages will simply just not render the pages because GF3 uses Fat-Free-Frameworks own rendering engine by default, but this can be changed by altering the render function in `app/application/php_functions.php` to render a different way.
 
 For detailed instructions on using F3's rendering engine, check out [their documentation](https://fatfreeframework.com/3.6/views-and-templates#AQuickLookattheF3TemplateLanguage).
 
@@ -161,7 +163,7 @@ What's handled automatically:
 	- If there is a form on the page loaded by the `get()` method above, sending the form data via POST to the same target page that is currently loaded will automatically invoke the `post()` method inside the controller.
 	
 This structure means that you can choose to call any method in a class by simply adding it to your URL.
-You could use the URL `example.com/example/example_of_a_method` which will invoke the method `example_of_a_method` inside the class. This does not detect if the method is supposed to GET or POST data, so you can check that yourself using `$this->f3->get('VERB')` to detect if you are posting to a specific method, and if you are, you can tell the controller to load a different method for handling that data. See `controller/ex2.php` for an example of this. Of course, if a specific method call does not require POST data processing, this step is not necessary.
+You could use the URL `example.com/example/example_of_a_method` which will invoke the method `example_of_a_method` inside the class. This does not detect if the method is supposed to GET or POST data, so you can check that yourself using `$this->f3->get('VERB')` to detect if you are posting to a specific method, and if you are, you can tell the controller to load a different method for handling that data. See `modules/ex2/controllers/controller.php` for an example of this. Of course, if a specific method call does not require POST data processing, this step is not necessary.
 	
 For additional routing capabilities, take a look at [F3's routing engine documentation](https://fatfreeframework.com/3.6/routing-engine)
 
