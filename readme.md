@@ -41,19 +41,17 @@ I've attempted to make the GF3 structure easy to follow. Most edits will be made
 		routes.ini
 | modules
 	| ex1
-		| controllers
-			controller.php
 		| models
 			model.php
 		| views
 			index.htm
+		controller.php
 	| ex2
-		| controllers
-			controller.php
 		| models
 			model.php
 		| views
 			index.htm
+		controller.php
 controller.php
 ```
 
@@ -67,7 +65,7 @@ Here is a simple class skeleton:
 
 ```
 <?php
-namespace modules\MODULE_NAME\controllers;
+namespace modules\MODULE_NAME;
 class controller extends \Controller {
 	function get() {
 		$example = loadModel('model');
@@ -76,7 +74,7 @@ class controller extends \Controller {
 }
 ```
 
-Classes have a namespace "modules\MODULE_NAME\controllers", so F3 knows which class is a controller or a model.
+Classes have a namespace "modules\MODULE_NAME", so F3 knows which class is a controller or a model.
 
 Note: MODULE_NAME should be equal to the directory name the module resides in. So if you have a module called "login", it would be stored at app/modules/login/ and MODULE_NAME would be "login"
 

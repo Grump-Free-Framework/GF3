@@ -11,7 +11,7 @@ $f3 = Base::instance();
 $f3->config('config.ini');
 $f3->config('app/application/routes.ini');
 
-$f3->map('/', "modules\\{$f3->get('defaultModule')}\\controllers\\Controller");
+$f3->map('/', "modules\\{$f3->get('defaultModule')}\\Controller");
 
 //php imports
 require_once("app/application/php_functions.php");
