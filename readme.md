@@ -5,10 +5,12 @@ GF3 is a framework based on Fat-Free-Framework, which is mostly known for allowi
 
 Currently, GF3 comes with a few core features:
 - Fat-Free-Framework version 3.6
-- A custom completely modular MVC system structure
+- A custom completely modular MVC system structure, plug-in ready
 - Stock with UIKIT 3, but can easily be changed.
 - Template (Header, navbar, footer) maintained in single file, and can easily switch between multiple different templates
 - GrumpyPDO 1.4 for easy and secure MySQL database management
+
+Looking for plugins? Check out https://github.com/GrumpyCrouton/gf3-modules
 
 ## Installation
 
