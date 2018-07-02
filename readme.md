@@ -71,7 +71,7 @@ namespace modules\MODULE_NAME;
 class controller extends \Controller {
 	function get() {
 		$example = loadModel('model');
-		echo render('index.htm');
+		echo render('index');
 	}
 }
 ```
