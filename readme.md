@@ -63,68 +63,41 @@ This version has a modules system in place that allows you to easily create new 
 
 Controllers are what tells the server what it is that it should be doing when on a specific route.
 
-Here is a simple class skeleton:
+Here is a simple controller class skeleton:
 
 ```
 <?php
 namespace modules\MODULE_NAME;
 class controller extends \Controller {
+
 	function get() {
 		$example = loadModel('model');
 		echo render('index');
 	}
+	
 }
 ```
 
 Classes have a namespace "modules\MODULE_NAME", so F3 knows which class is a controller or a model.
 
-Note: MODULE_NAME should be equal to the directory name the module resides in. So if you have a module called "login", it would be stored at app/modules/login/ and MODULE_NAME would be "login"
+### Rendering Pages Through Controllers
 
-Classes also extend the base controller class (`\Controller`). 
-This gives you access to the f3 base class inside the actual page controller with the variable `$this->f3`.
-This is necessary to do things like setting variables, etc.
-
-There is also a function that is used called `loadModel()`, this will allow you to easily load any model that is stored inside the MODULE_NAME/models folder by just passing the name of the class to the function.
-
-#### Rendering Pages Through Controllers
-
-You'll also notice that to render a page we call the function `render()`, which is stored in `app/application/php_functions.php`. This function is used like this:
+You'll also notice that to render a page we call the function `render()`, which is used like this:
 
 ```
 render($content, $template)
 ```
 
-Where `$content` is a relative path from `app/modules/MODULE_NAME/views/` to the page content. So, in the example above, we use the path `index` to load the index.htm page from `app/modules/MODULE_NAME/views/index.htm` - You should not put the .htm extension when using this function.
+- `$content` is a relative path from `app/modules/MODULE_NAME/views/` to the page content, excluding the file extension. (must be .htm)
+- `$template` is a relative path from `app/` to a template page, excluding the file extension. (must be .htm, default is `templates/main`)
 
-Also, `$template` is a relative path from `app/` to a template page. By default, the path supplied is `templates/main`. This is the page template that is loaded.
-This function makes it trivial to load content into any template you wish easily. - You should not put the .htm extension when using this function.
+Files loaded through this function must be `.htm` files, and the path should exclude the file extension. This function makes it trivial to load content into any template you wish easily.
 
 ### Models
 
 Models are the data layer of your application, logic and database queries should be done here.
 
-Here is a simple model skeleton based on the controller above:
-
-```
-<?php
-namespace modules\MODULE_NAME\models;
-class Model {
-	
-	public function returnOutput() {
-	    return "Example Output One";
-	}
-	
-}
-```
-
-So, if you wanted to store the return of `returnOutput()` to use in a view later, in the controller you would do:
-
-```
-$model = loadModel('model');
-$this->f3->set('variable', $model->returnOutput());
-```
-
-If you want to interact with your database in the model, you would alter your model like so:
+Here is a model class skeleton that already imports the database object.
 
 ```
 <?php
@@ -144,38 +117,68 @@ class Model {
 }
 ```
 
+So, if you wanted to store the return of `returnOutput()` to use in a view later, in the controller you would do:
+
+```
+$model = loadModel('model');
+$this->f3->set('variable', $model->returnOutput());
+```
+
 Which would allow you to access database object with `$this->db`. If you use GrumpyPDO, this means queries can be done anywhere inside the model as simply as `$this->db->run($query, $variables);`
+
+### Using your Model
+
+To load a model, we use the function `loadmodel()`, which is used like this:
+
+```
+loadModel($model);
+```
+
+- `$model` is a relative path from `app/modules/MODULE_NAME/models/` to the model class, excluding the file extension.
+
+Files loaded through this function must be `.php` files, and the path should exclude the file extension. This function makes it trivial to load multiple models into the same controller easily.
 
 ### Views
 
-Views are stored in `modules/MODULE_NAME/views/`. View files should be built in HTML, I'm fairly positive that trying to use any PHP on these pages will simply just not render the pages because GF3 uses Fat-Free-Frameworks own rendering engine by default, but this can be changed by altering the render function in `app/application/php_functions.php` to render a different way.
+Views are stored in `modules/MODULE_NAME/views/`. View files should be built in HTML, and have a `.htm` file extension.
 
 For detailed instructions on using F3's rendering engine, check out [their documentation](https://fatfreeframework.com/3.6/views-and-templates#AQuickLookattheF3TemplateLanguage).
 
 ### Automatic Routing
 
-For the most part, barring some of the more complex routes, will be done automatically.
+For the most part, barring some of the more complex routes, routing will be done automatically.
 
 What's handled automatically:
  - The routing structure is example.com/MODULE/CONTROLLER_METHOD
- - If no CONTROLLER_METHOD is given, (e.g `example.com/example`), a method matching the verb of whatever HTTP request given will be executed.
-	- For example, just navigating to the example above will invoke the `example` controller and automatically call the `get()` method inside of it.
-	- If there is a form on the page loaded by the `get()` method above, sending the form data via POST to the same target page that is currently loaded will automatically invoke the `post()` method inside the controller.
-	
-This structure means that you can choose to call any method in a class by simply adding it to your URL.
-You could use the URL `example.com/example/example_of_a_method` which will invoke the method `example_of_a_method` inside the class. This does not detect if the method is supposed to GET or POST data, so you can check that yourself using `$this->f3->get('VERB')` to detect if you are posting to a specific method, and if you are, you can tell the controller to load a different method for handling that data. See `modules/ex2/controllers/controller.php` for an example of this. Of course, if a specific method call does not require POST data processing, this step is not necessary.
+ - If `CONTROLLER_METHOD` is not given, a method matching the verb of your http request will be executed. (e.g `get()`, `post()`, etc)
+ 
+This structure means that by default, dynamic page loading will need to be handled with `$_GET` variables, because the automatic routing does not support adding more information to the URI itself, such as `/MODULE/CONTROLLER_METHOD/VARIABLE`, but you could do `/MODULE/CONTROLLER_METHOD?variable=variable`.
+
+Automatic URL routing does not detect the HTTP request actually being sent to the server, so if you are POSTING to a page loaded by a `/CONTROLLER_METHOD`, you'll have to check the verb to process the `$_POST` data, or you can just check if `$_POST` data was sent to the server.
+
+The below example will load `register.htm` (with a custom page template) when accessing `example.com/login/register` when the request to the server is `GET`, but when posting to the same URI, it will call the `registerUser()` method inside the class instead. 
+
+```
+public function register()
+{
+	if($this->f3->get('VERB') == "POST") {
+	    $this->registerUser();
+	}
+	echo render('register', 'modules/login/template'); 
+}
+```
 	
 For additional routing capabilities, take a look at [F3's routing engine documentation](https://fatfreeframework.com/3.6/routing-engine)
 
-### Module Specific beforeroute and afterroute
+### Modularized Before and After Route Options
 
-Inside a module directory, you can create a file called `beforeroute.php` and `afterroute.php` to automatically be loaded when the project executes. This is a simple `include` hook to the beforeroute and afterroute method inside the base controller `app/controller.php` that checks for the files mentioned above and includes them into the page when found.
+Inside a module directory, you can create a file called `beforeroute.php` or `afterroute.php` to automatically be loaded before or after the routing is done.
 
-Inside these files, you have access to the framework base with `$this->f3` because the file is simply included inside the base controller class. I added this to give the ability to modules to easily create rules for themselves, for example, a good use case for this would be if you were including a login system to your website. In beforeroute.php you would check if the user is logged in, and if they are not, you can easily redirect the user to the login page.
+- Great place for module-specific checks. For example, a login module can check if a user is logged in and redirect to a login page if not.
+- Always loaded (even if module is not)
+- Store module-specific functions here that all modules will have access to. (I usually create a `functions.php` file inside the module directory and include it in `beforeroute.php` by `include `functions.php`)
 
-beforeroute and afterroute are always included, whether that module is loaded or not.
-
-Working example:
+Login Module Example:
 
 ```
 <?php
@@ -187,7 +190,17 @@ if(!in_array("login", $uri)) {
 }
 ```
 
-The above will automatically reroute the user to `/login` if `$_SESSION['user']` is not set and the user is not already on a route that contains the word "login".
+The above will automatically reroute the user to `/login` if `$_SESSION['user']` is not set and the user is not already on a route that contains the word "login" in the URI.
+
+Similarly, you can check if a module IS loaded by checking the URI:
+
+```
+<?php
+$uri = explode("/", $this->f3->get('URI'));
+if(in_array("login", $uri)) {
+	echo "I'm in the login module! (or a module with a method called login)";
+}
+```
 
 ## Contributing
 
