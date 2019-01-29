@@ -6,7 +6,7 @@ require_once("app/application/vendor/fat-free-framework-3.6.4/base.php");
 $f3 = Base::instance();
 
 //configs
-$f3->config('config.ini');
+$f3->config('config.ini.php');
 $f3->config('app/application/routes.ini');
 
 $f3->map('/', "modules\\{$f3->get('defaultModule')}\\Controller");
