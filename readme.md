@@ -16,9 +16,9 @@ Looking for plugins? Check out https://github.com/GrumpyCrouton/gf3-modules
 
 Drag & Drop Ready. Simply download the repository as a zip file and unpack it onto an apache server, and then rename the `.htaccess.apache` file to `.htaccess`
 
-NOTE: It is absolutely essential that you change the permissions of config.ini (in the root directory) to a setting that will not allow the browser to view/download it. I personally use chmod 700 (Owner has all permissions but no one else). This is where your database credentials should be stored, and failing to change these permissions could very well allow anyone to access the file and get database login credentials which would be VERY BAD.
-
 For nginx, lighttpd, IIS, check out the documentation at [https://fatfreeframework.com/3.6/routing-engine#SampleApacheConfiguration](fatfreeframework.com) for information on how to set up the project.
+
+NOTE: The INI file that we use to store our database credentials and global paths should be secure from being viewed in the browser, but for extra security it would be best to assign permissions to this file that allow it to only be read from the server itself.
 
 ## Documentation
 
