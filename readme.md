@@ -168,6 +168,7 @@ Models are the layer of the module which is meant to do all of the database comm
 Inside your module folder, create a new folder called "models". Inside this folder create a new file called "new_model.php". The name of the model does not matter, I'm using this as an example.
 
 new_model.php:
+
 	<?php
 	namespace modules\new_module\models;
 	class New_Model extends \Model {
