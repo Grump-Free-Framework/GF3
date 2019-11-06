@@ -6,47 +6,28 @@
 		<title>Grump-Free-Framework</title>
 		<link rel="icon" href="img/favicon.ico">
 		<!-- CSS/JS FILES -->
-		<link rel="stylesheet" type="text/css" href="{{@BASE}}/assets/css/uikit.min.css">
-		<link rel="stylesheet" type="text/css" href="{{@BASE}}/assets/css/custom.css">
-		<script src="{{@BASE}}/assets/js/uikit.min.js"></script>
-		<script src="{{@BASE}}/assets/js/uikit-icons.min.js"></script>
+		
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.8/dist/semantic.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.7.8/dist/semantic.min.js"></script>
+		
+		<!-- Custom CSS from assets folder -->
+		<link rel="stylesheet" type="text/css" href="{{ @BASE }}/assets/css/custom.css">
+		
 	</head>
 	<body>
-		<div class="uk-offcanvas-content">
-			<!--HEADER-->
-			
-			<header style="background-color: #fff; border-bottom: 1px solid #f2f2f2" data-uk-sticky="show-on-up: true; animation: uk-animation-slide-top">
-				<div class="uk-container">
-					<nav id="navbar" data-uk-navbar="mode: click;">
-						<div class="uk-navbar-center">
-							<a class="uk-navbar-item uk-logo" href="#">Grump-Free-Framework</a>
-						</div>
-					</nav>
-				</div>
-			</header>
-			
-			<include href="{{ @content }}" />
-			
-			<footer class="uk-section uk-section-small" style="margin-bottom: 60px">
-				<div class="uk-container">
-					<p class="uk-text-small uk-text-center">Built with <a href="http://getuikit.com" title="Visit the UIkit 3 site" target="_blank" data-uk-tooltip><span data-uk-icon="uikit"></span></a> & <a href="https://fatfreeframework.com" title="Visit the F3 Site" target="_blank" data-uk-tooltip>F3</a> </p>
-				</div>
-			</footer>
-			<!--/FOOTER-->
-			<!-- BOTTOM BAR -->
-			<div class="uk-section uk-section-xsmall uk-section-default uk-position-bottom uk-position-fixed" style="border-top: 1px solid #f2f2f2">
-				<div class="uk-container uk-container-small uk-text-small">
-					<div class="uk-grid" data-uk-grid>
-						<div class="uk-width-expand">
-							<a href="#" class="uk-link-reset">
-								<span data-uk-icon="icon: arrow-right"></span>
-								<span class="uk-visible@s">Grump-Free-Framework | <small>Page Rendered in {{ @loadtime }} seconds.</small></span>
-							</a>
-						</div>
-					</div>
+		<div class="ui container">
+			<div class="ui borderless massive menu">
+				<a class="header item">Grump-Free-Framework</a>
+				<div class="right menu">
+					<a href="{{ @BASE }}/" class="{{ @module == 'empty_module' ? 'active' : '' }} item">Empty</a> 
+					<a href="{{ @BASE }}/model_module" class="{{ @module == 'model_module' ? 'active' : '' }} item">Model</a>
+					<a href="{{ @BASE }}/alt_template_module" class="{{ @module == 'alt_template_module' ? 'active' : '' }} item">Alternate</a>
 				</div>
 			</div>
-			<!-- /BOTTOM BAR -->
+			<include href="{{ @content }}" />
+			<div class="ui divider"></div>
+			<footer><a href="https://github.com/GrumpyCrouton/grump-free-framework">Grump Free Framework</a> | Loaded module "{{ @module }}" In {{ @loadtime }} seconds.</footer>
 		</div>
 	</body>
 </html>

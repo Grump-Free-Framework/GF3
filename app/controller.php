@@ -26,8 +26,20 @@ class Controller {
 		$this->f3 = Base::instance();
 		
 		$module = $this->f3->get("PARAMS.module");
-		$this->f3->module = $module ? $module : $this->f3->get("defaultModule");;
+		$this->f3->module = $module ? $module : $this->f3->get("defaultModule");
 		
+	}
+	
+	public function render($content, $template = 'templates/main') {
+		$module = $this->f3->module;
+		$this->f3->set('content', "$module/views/$content.htm");
+		return \Template::instance()->render("../$template.htm");
+	}
+	
+	public function model($model, $module_override = null) {
+		$module = $module_override === null ? $this->f3->module : $module_override;
+		$class = "\\modules\\{$module}\\models\\{$model}";
+		return new $class();
 	}
 
 }

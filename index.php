@@ -11,9 +11,6 @@ $f3->config('app/application/routes.ini');
 
 $f3->map('/', "modules\\{$f3->get('defaultModule')}\\Controller");
 
-//php imports
-require_once("app/application/php_functions.php");
-
 //setup grumpypdo as db
 $f3->set('db', new GrumpyPDO($f3->get('db_host'), $f3->get('db_username'), $f3->get('db_password'), $f3->get('db_database')));
 

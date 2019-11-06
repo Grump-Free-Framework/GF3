@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+		<title>Grump-Free-Framework</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+		
+		<!-- Custom styles for this template -->
+		<link href="{{ @BASE }}/assets/css/custom_bootstrap.css" rel="stylesheet">
+		
+	</head>
+	
+	<body>
+		
+		<!-- Navigation -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+			<div class="container">
+				<a class="navbar-brand" href="#">Grump-Free-Framework</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item {{ @module == 'empty_module' ? 'active' : '' }}">
+							<a class="nav-link" href="{{ @BASE }}/">Empty</a>
+						</li>
+						<li class="nav-item {{ @module == 'model_module' ? 'active' : '' }}">
+							<a class="nav-link" href="{{ @BASE }}/model_module">Model</a>
+						</li>
+						<li class="nav-item {{ @module == 'alt_template_module' ? 'active' : '' }}">
+							<a class="nav-link" href="{{ @BASE }}/alt_template_module">Alternate</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<!-- Page Content -->
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8">
+						<h1 class="mt-5">Grump-Free-Framework</h1>
+						<p>
+							This page exists to showcase ease of switching master templates in Grump-Free-Framework.<br>
+							Loaded module "{{ @module }}" In {{ @loadtime }} seconds.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Bootstrap core JavaScript -->
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		
+	</body>
+	
+</html>
