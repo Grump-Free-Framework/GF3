@@ -1,5 +1,5 @@
 # Grump-Free-Framework
-> Fork of Fat-Free-Framework 3.6 with included MVC project structure with basic automated routing, UIKit 3, and GrumpyPDO 1.4, Drag & Drop ready to reduce grumpiness.
+> Fork of Fat-Free-Framework 3.6 with included MVC project structure with basic automated routing, Formantic-UI, and GrumpyPDO 1.4, Drag & Drop ready to reduce grumpiness.
 
 GF3 is a framework based on Fat-Free-Framework, which is mostly known for allowing you to structure your projects however you want, but this fork has a MVC structure baked into it. This is basically a skeleton project that may be used to rapidly create MVC model websites.
 
