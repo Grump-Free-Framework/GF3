@@ -27,6 +27,7 @@ Application settings can be found in `./config.ini`
 List of things you can do in settings:
  - Set up your MySQL connection details
  - Change the default module
+ - Change the default template used when rendering views
 
 You can also fairly easily change the location of certain things like UI elements.
 
@@ -168,6 +169,7 @@ Models are the layer of the module which is meant to do all of the database comm
 Inside your module folder, create a new folder called "models". Inside this folder create a new file called "new_model.php". The name of the model does not matter, I'm using this as an example.
 
 new_model.php:
+
 	<?php
 	namespace modules\new_module\models;
 	class New_Model extends \Model {

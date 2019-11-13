@@ -5,6 +5,7 @@
 
 ; PROJECT SETTINGS
 defaultModule = "ex1"
+defaultTemplate = "templates/main"
 
 ; DATABASE SETUP
 db_host = "localhost"
