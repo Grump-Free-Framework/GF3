@@ -4,7 +4,7 @@
 [globals]
 
 ; PROJECT SETTINGS
-defaultModule = "ex1"
+defaultModule = "empty_module"
 defaultTemplate = "templates/main"
 
 ; DATABASE SETUP
