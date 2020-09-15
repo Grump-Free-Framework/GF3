@@ -227,13 +227,17 @@ Let's say you have a module called `new_module`, and a method called `page()` wh
 	
 For additional routing capabilities, take a look at [F3's routing engine documentation](https://fatfreeframework.com/3.6/routing-engine)
 
-### Modularized Before and After Route Options
+### Before and After Route Handling
 
-Inside a module directory, you can create a file called `beforeroute.php` or `afterroute.php` to automatically be loaded before or after the routing is done.
+There are 2 ways to make a module run some code before or after the module is loaded.
 
-- Great place for module-specific checks. For example, a login module can check if a user is logged in and redirect to a login page if not.
-- Always loaded (even if module is not)
-- Store module-specific functions here that all modules will have access to. (I usually create a `functions.php` file inside the module directory and include it in `beforeroute.php` by `include `functions.php`)
+#### Global Before/After Route
+
+Create a file in the root of a module named `beforeroute_global.php` or `afterroute_global.php` respectively to make Grump-Free-Framework run code before or after ANY module is loaded.
+
+#### Module-Specific Before/After Route
+
+Create a file in the root of a module named `beforeroute.php` or `afterroute.php` respectively to make Grump-Free-Framework run code before or after that specific module is loaded.
 
 ## Contributing
 
