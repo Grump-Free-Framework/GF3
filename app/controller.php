@@ -5,15 +5,21 @@ class Controller {
 	protected $f3;
 
 	function beforeroute(){
-		//echo 'Before routing - ';
-		foreach (glob($this->f3->get('UI')."*/beforeroute.php") as $filename) {
+		$ui = $this->f3->get('UI');
+		if(file_exists($file = "{$ui}$module/beforeroute.php")) {
+			include $file;
+		}
+		foreach (glob("{$ui}*/beforeroute_global.php") as $filename) {
 			include $filename;
 		}
 	}
 
 	function afterroute(){
-		//echo '- After routing';
-		foreach (glob($this->f3->get('UI')."*/afterroute.php") as $filename) {
+		$ui = $this->f3->get('UI');
+		if(file_exists($file = "{$ui}$module/afterroute.php")) {
+			include $file;
+		}
+		foreach (glob($this->f3->get('UI')."*/afterroute_global.php") as $filename) {
 			include $filename;
 		}
 	}
@@ -27,6 +33,9 @@ class Controller {
 		
 		$module = $this->f3->get("PARAMS.module");
 		$this->f3->module = $module ? $module : $this->f3->get("defaultModule");
+		
+		$method = $this->f3->get("PARAMS.method");
+		$this->f3->method = !empty($method) ? $method : $this->f3->VERB;
 		
 	}
 	
