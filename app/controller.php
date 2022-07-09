@@ -40,7 +40,7 @@ class Controller {
 		    'db_username'
 		];
 		foreach($redact_config_values as $key) {
-		    $f3->set($key, 'REDACTED');
+		    $this->f3->set($key, 'REDACTED');
 		}
 
 		$module = $this->f3->get("PARAMS.module");
