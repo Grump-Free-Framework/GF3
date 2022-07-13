@@ -10,13 +10,13 @@ Currently, GF3 comes with a few core features:
 - Template (Header, navbar, footer) maintained in single file, and can easily switch between multiple different templates
 - GrumpyPDO 1.4 for easy and secure MySQL database management
 
-Demo: [https://git.grumpycrouton.com/gf3](Demo)
+Demo: https://git.grumpycrouton.com/gf3
 
 ## Installation
 
 Drag & Drop Ready. Simply download the repository as a zip file and unpack it onto an apache server, and then rename the `.htaccess.apache` file to `.htaccess`
 
-For nginx, lighttpd, IIS, check out the documentation at [https://fatfreeframework.com/3.6/routing-engine#SampleApacheConfiguration](fatfreeframework.com) for information on how to set up the project.
+For nginx, lighttpd, IIS, check out the documentation at https://fatfreeframework.com/3.6/routing-engine#SampleApacheConfiguration for information on how to set up the project.
 
 NOTE: The INI file that we use to store our database credentials and global paths should be secure from being viewed in the browser, but for extra security it would be best to assign permissions to this file that allow it to only be read from the server itself.
 
