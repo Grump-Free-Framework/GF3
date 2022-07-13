@@ -10,6 +10,8 @@ Currently, GF3 comes with a few core features:
 - Template (Header, navbar, footer) maintained in single file, and can easily switch between multiple different templates
 - GrumpyPDO 1.4 for easy and secure MySQL database management
 
+Demo: [https://git.grumpycrouton.com/gf3](Demo)
+
 ## Installation
 
 Drag & Drop Ready. Simply download the repository as a zip file and unpack it onto an apache server, and then rename the `.htaccess.apache` file to `.htaccess`
