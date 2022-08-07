@@ -1,6 +1,8 @@
 Demo: https://git.grumpycrouton.com/gf3
 
-Documentation: https://github.com/GrumpyCrouton/grump-free-framework/wiki
+GF3 Documentation: https://github.com/GrumpyCrouton/grump-free-framework/wiki
+
+F3 Documentation: https://fatfreeframework.com/3.8/api-reference
 
 ## Contributing
 
