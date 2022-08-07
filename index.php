@@ -1,6 +1,6 @@
 <?php
 
-require_once("app/application/vendor/f3/base.php");
+require_once("app/application/vendor/f3-3.8/base.php");
 
 //define base
 $f3 = Base::instance();
@@ -13,9 +13,8 @@ $f3->map('/', "modules\\{$f3->get('defaultModule')}\\Controller");
 
 //setup grumpypdo as db
 if(!empty($f3->get('db_username'))) {
-	$f3->set('db', new GrumpyPDO($f3->get('db_host'), $f3->get('db_username'), $f3->get('db_password'), $f3->get('db_database')));
+	$f3->set('db', new GrumpyPDO($f3->get('dbHost'), $f3->get('dbUser'), $f3->get('dbPassword'), $f3->get('dbDatabase')));
 }
-
 
 //calculate page load time
 $f3->set('loadtime', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 3));
