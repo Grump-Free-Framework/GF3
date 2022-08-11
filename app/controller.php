@@ -7,11 +7,11 @@ class Controller {
 	protected $settings = [];
 
 	function beforeroute(){
-		$this->HandlePreAndPostRouting('before');
+		$this->handlePreAndPostRouting('before');
 	}
 
 	function afterroute(){
-		$this->HandlePreAndPostRouting('after');
+		$this->handlePreAndPostRouting('after');
 	}
 
 	function __construct() {
@@ -31,19 +31,18 @@ class Controller {
 
 	}
 
-	public function RenderView($view_file_name, $template = 'default') {
+	public function renderView($view_file_name, $template = 'default') {
 		echo $this->render($view_file_name);
 	}
 
 	public function render($view_file_name, $template = 'default') {
-		if($template == "default") {
-			$template = $this->f3->get('defaultTemplate');
-		}
-		$this->f3->set('content', "{$this->f3->module}/views/{$view_file_name}.htm");
+		$f3 = $this->f3;
+		$template = $template == "default" ? $f3->get('defaultTemplate') : $template;
+		$this->f3->set('content', "{$f3->module}/views/{$view_file_name}.htm");
 		return \Template::instance()->render("../{$template}.htm");
 	}
 
-	public function LoadModel($model, $module_override = null) {
+	public function loadModel($model, $module_override = null) {
 		return $this->model($model, $module_override);
 	}
 
@@ -53,7 +52,7 @@ class Controller {
 		return new $class();
 	}
 
-	private function HandlePreAndPostRouting($route) {
+	private function handlePreAndPostRouting($route) {
 		$modules_path = $this->f3->get('UI');
 		$moduleDirs = new DirectoryIterator($modules_path);
 		foreach ($moduleDirs as $dir) {
