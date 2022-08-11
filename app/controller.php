@@ -30,6 +30,7 @@ class Controller {
 
 	public function render($view_file_name, $template = 'default') {
 		$f3 = $this->f3;
+		$f3->set('module_settings', $this->settings);
 		$template = $template == "default" ? $f3->get('defaultTemplate') : $template;
 		$this->f3->set('content', "{$f3->module}/views/{$view_file_name}.htm");
 		return \Template::instance()->render("../{$template}.htm");
