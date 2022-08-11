@@ -4,7 +4,7 @@ class Controller {
 
 	protected $f3;
 
-	protected $settings = [];
+	public $settings = [];
 
 	function beforeroute(){
 		$this->handlePreAndPostRouting('before');
@@ -17,14 +17,7 @@ class Controller {
 	function __construct() {
 
 		$this->f3 = Base::instance();
-
-		if($this->f3->get('redactDatabaseInfoOnCrashLogs')) {
-			//redact this information from logs once
-			$redact_config_values = ['db_host', 'db_password', 'db_database', 'db_username'];
-			foreach($redact_config_values as $key) {
-			    $this->f3->set($key, 'REDACTED');
-			}
-		}
+		$this->f3->set('active_module', $this);
 
 		$this->f3->module = $this->f3->get("PARAMS.module") ?: $this->f3->get('defaultModule');
 		$this->f3->method = $this->f3->get("PARAMS.method") ?: $this->f3->VERB;
@@ -53,6 +46,7 @@ class Controller {
 	}
 
 	private function handlePreAndPostRouting($route) {
+		$f3 = $this->f3;
 		$modules_path = $this->f3->get('UI');
 		$moduleDirs = new DirectoryIterator($modules_path);
 		foreach ($moduleDirs as $dir) {
@@ -60,6 +54,9 @@ class Controller {
 			$path = "{$modules_path}{$dir}";
 			if(!$dir->isDot() && is_dir($path) && file_exists("{$path}/controller.php")) {
 				if(file_exists($include_file = "{$path}/{$route}route_global.php")) {
+					if (stripos(file_get_contents($include_file), '$this->') !== false) {
+						throw new Exception('Using $this in beforeroute_global.php is not reliable');
+					}
 					require_once $include_file;
 				}
 				if($this->f3->get('module') == $dir) {

@@ -13,7 +13,10 @@ $f3->map('/', "modules\\{$f3->get('defaultModule')}\\Controller");
 
 //setup grumpypdo as db
 if(!empty($f3->get('db_username'))) {
-	$f3->set('db', new GrumpyPDO($f3->get('dbHost'), $f3->get('dbUser'), $f3->get('dbPassword'), $f3->get('dbDatabase')));
+	$f3->set('db', new GrumpyPDO($f3->get('db_host'), $f3->get('db_password'), $f3->get('db_database'), $f3->get('db_username')));
+	foreach($this->get('sensitive_config_keys') as $sensitive_config_key) {
+		$f3->clear($sensitive_config_key);
+	}
 }
 
 //calculate page load time
