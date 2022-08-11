@@ -4,6 +4,8 @@ class Controller {
 
 	protected $f3;
 
+	protected $settings = [];
+
 	function beforeroute(){
 		$this->HandlePreAndPostRouting('before');
 	}
@@ -29,12 +31,20 @@ class Controller {
 
 	}
 
+	public function RenderView($view_file_name, $template = 'default') {
+		echo $this->render($view_file_name);
+	}
+
 	public function render($view_file_name, $template = 'default') {
 		if($template == "default") {
 			$template = $this->f3->get('defaultTemplate');
 		}
 		$this->f3->set('content', "{$this->f3->module}/views/{$view_file_name}.htm");
 		return \Template::instance()->render("../{$template}.htm");
+	}
+
+	public function LoadModel($model, $module_override = null) {
+		return $this->model($model, $module_override);
 	}
 
 	public function model($model, $module_override = null) {
@@ -48,13 +58,23 @@ class Controller {
 		$moduleDirs = new DirectoryIterator($modules_path);
 		foreach ($moduleDirs as $dir) {
 
-			$path = "{$modules_path}/{$dir}";
+			$path = "{$modules_path}{$dir}";
 			if(!$dir->isDot() && is_dir($path) && file_exists("{$path}/controller.php")) {
 				if(file_exists($include_file = "{$path}/{$route}route_global.php")) {
 					require_once $include_file;
 				}
-				if(file_exists($include_file = "{$path}/{$route}route.php") && $this->f3->get('module') == $dir) {
-					require_once $include_file;
+				if($this->f3->get('module') == $dir) {
+					if(file_exists($include_file = "{$path}/{$route}route.php")) {
+						require_once $include_file;
+					}
+					if($route == 'before' && file_exists($settings_file = "{$path}/settings.json")) {
+						$settings = json_decode(file_get_contents($settings_file));
+						if (json_last_error() === JSON_ERROR_NONE) {
+						   $this->settings = $settings;
+					   } else {
+						   throw new Exception('Settings file is not valid JSON.');
+					   }
+					}
 				}
 			}
 
