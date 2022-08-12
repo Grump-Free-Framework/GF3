@@ -6,6 +6,9 @@ class Controller {
 
 	public $settings = [];
 
+	public const REROUTE_BASE = 0;
+	public const REROUTE_MODULE = 1;
+
 	function beforeroute(){
 		$this->handlePreAndPostRouting('before');
 	}
@@ -44,6 +47,11 @@ class Controller {
 		$module = $module_override ?: $this->f3->module;
 		$class = "\\modules\\{$module}\\models\\{$model}";
 		return new $class();
+	}
+
+	public function reroute($location, $mode = SELF::REROUTE_BASE) {
+		$reroute = $mode === SELF::REROUTE_MODULE ? "{$this->f3->module}{$location}" : $location;
+		$this->f3->reroute($reroute);
 	}
 
 	private function handlePreAndPostRouting($route) {
