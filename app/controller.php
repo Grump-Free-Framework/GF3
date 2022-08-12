@@ -28,7 +28,7 @@ class Controller {
 	}
 
 	public function renderView($view_file_name, $template = 'default') {
-		echo $this->render($view_file_name);
+		echo $this->render($view_file_name, $template);
 	}
 
 	public function render($view_file_name, $template = 'default') {

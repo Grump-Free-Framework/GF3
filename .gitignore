@@ -1,2 +1,3 @@
 app/application/tmp/*
 app/modules/auth/
+app/templates/blank.htm
