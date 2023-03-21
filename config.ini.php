@@ -13,9 +13,6 @@ db_username = ""
 db_password = ""
 db_database = ""
 
-; Redact DATABASE SETUP values from crash logs
-redactDatabaseInfoOnCrashLogs = true
-
 DEBUG=3
 UI=app/modules/
 AUTOLOAD=app/|app/application/vendor/grumpypdo-1.6/
